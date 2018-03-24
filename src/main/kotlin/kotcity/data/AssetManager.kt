@@ -8,6 +8,7 @@ import kotcity.util.randomElement
 import java.io.FileNotFoundException
 import java.io.FileReader
 import java.io.InputStreamReader
+import java.net.URL
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
@@ -52,7 +53,10 @@ class AssetManager(val cityMap: CityMap) {
                     .collect(toList())
                     .map({ it.toAbsolutePath().toString() })
         } catch (ex: java.nio.file.NoSuchFileException) {
-            val path = Paths.get(this::class.java.classLoader.getResource("assets/$dir").toURI())
+            val assetURI = this::class.java.classLoader.getResource("assets/$dir").toURI()
+            println("Asset URI is: $assetURI")
+            // TODO: this is fucked...
+            val path = Paths.get(assetURI)
             return Files.walk(path)
                     .filter { it: Path? ->
                         it?.let { matcher.matches(it.fileName) } ?: false
