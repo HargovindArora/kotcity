@@ -1,17 +1,17 @@
-# KotCity 0.46
+# KotCity 0.47
 
 [![Build Status](https://semaphoreci.com/api/v1/kotcity/kotcity/branches/master/badge.svg)](https://semaphoreci.com/kotcity/kotcity) [![Build Status](https://travis-ci.org/kotcity/kotcity.svg?branch=master)](https://travis-ci.org/kotcity/kotcity)
 
 ## WARNING!
 
-This is _pre alpha_ software with super obvious bugs, rough edges etc. In the spirit of "release early and release often", I am posting the code. This project is far from done but I prefer to get the code out there to be used by whomever. Disagree with the project? Fork it :)
+This is _pre-alpha_ software with super obvious bugs, rough edges etc. In the spirit of "release early and release often", I am posting the code. This project is far from done but I prefer to get the code out there to be used by whomever. Disagree with the project? Fork it :)
 
 ## Obligatory Screenshot
 ![KotCity Screenshot](screenshot.jpg?raw=true "Screenshot of the game's UI and an example city")
 
 ## Gimme the Software!
 
-A build for Windows, macOS and Linux is available [here](https://github.com/kotcity/kotcity/releases/tag/0.46).
+[Download latest pre-alpha for Windows, macOS and Linux](https://github.com/kotcity/kotcity/releases).
 
 Java 8+ is required. On Windows it will look for JRE and bring you to download page if you don't have it.
 
@@ -19,8 +19,7 @@ Java 8+ is required. On Windows it will look for JRE and bring you to download p
 
 ## New in this version
 
-* buildings upgrade to level 2 now :)
-* reworked UI (@sabieber!)
+* Added icons for toolbar (@sabieber!)
 
 ## Next up!
 
@@ -87,7 +86,6 @@ You can contribute buildings (see assets directory), ideas for the game, help wi
 
 To make a game that "takes over" from SimCity 4. We have a loooooong way to go:
 * Implement land values.
-* Have traffic affect desirability.
 * Bus and rail and stations.
 * More types of power plant (hydro, wind, etc).
 * Create buildings that use resources under the ground (coal, etc).
@@ -101,4 +99,4 @@ For a more detailed overview of whats planned see our [roadmap](https://github.c
 
 ## License
 
-This project is licensed with Apache License 2.0. This project includes icons by various graphic designers from the Noun Project.
+This project is licensed with Apache License 2.0. This project includes icons by various graphic designers from the Noun Project. (see CREDITS file)

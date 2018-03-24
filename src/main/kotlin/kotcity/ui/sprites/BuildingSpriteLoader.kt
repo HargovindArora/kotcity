@@ -4,6 +4,9 @@ import javafx.scene.image.Image
 import kotcity.data.*
 import kotcity.memoization.CacheOptions
 import kotcity.memoization.cache
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.InputStreamReader
 
 object BuildingSpriteLoader {
 
@@ -19,8 +22,18 @@ object BuildingSpriteLoader {
     fun spriteForBuildingType(building: Building, width: Double, height: Double) =
         imageForFile(filename(building), width, height)
 
-    private fun uncachedImageForFile(filename: String, width: Double, height: Double) =
-        Image(filename, width, height, true, true)
+    private fun uncachedImageForFile(filename: String, width: Double, height: Double): Image {
+        return if (File(filename).isFile) {
+            Image(filename, width, height, true, true)
+        } else {
+            // let's try to load from classpath now...
+            val classPathFile = filename.replace("file:./assets", "assets")
+            println("The sprite filename is: $classPathFile")
+            Image(this::class.java.classLoader.getResource(classPathFile).toString(), width, height, true, true)
+        }
+
+    }
+
 
     fun filename(building: Building): String {
         return when (building::class) {

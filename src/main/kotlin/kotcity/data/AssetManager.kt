@@ -5,7 +5,9 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import kotcity.ui.sprites.BuildingSpriteLoader
 import kotcity.util.randomElement
+import java.io.FileNotFoundException
 import java.io.FileReader
+import java.io.InputStreamReader
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
@@ -41,13 +43,24 @@ class AssetManager(val cityMap: CityMap) {
         val glob = "glob:*.json"
         val matcher = FileSystems.getDefault().getPathMatcher(glob)
 
-        val path = Paths.get("./assets/$dir/")
-        return Files.walk(path)
-                .filter { it: Path? ->
-                    it?.let { matcher.matches(it.fileName) } ?: false
-                }
-                .collect(toList())
-                .map({ it.toAbsolutePath().toString() })
+        try {
+            val path = Paths.get("./assets/$dir/")
+            return Files.walk(path)
+                    .filter { it: Path? ->
+                        it?.let { matcher.matches(it.fileName) } ?: false
+                    }
+                    .collect(toList())
+                    .map({ it.toAbsolutePath().toString() })
+        } catch (ex: java.nio.file.NoSuchFileException) {
+            val path = Paths.get(ClassLoader.getSystemResource("assets/$dir").toURI())
+            return Files.walk(path)
+                    .filter { it: Path? ->
+                        it?.let { matcher.matches(it.fileName) } ?: false
+                    }
+                    .collect(toList())
+                    .map({ it.toAbsolutePath().toString() })
+        }
+
     }
 
     fun all(): List<LoadableBuilding> {
@@ -83,9 +96,13 @@ class AssetManager(val cityMap: CityMap) {
     fun buildingFor(klass: KClass<out Building>, name: String): Building {
 
         // ok we need to find the matching JSON file for this crap...
-        val assetFile = findAsset(klass, name)
-
-        val buildingJson = gson.fromJson<JsonObject>(FileReader(assetFile))
+        val buildingJson = try {
+            val assetFile = findAsset(klass, name)
+            gson.fromJson<JsonObject>(FileReader(assetFile))
+        } catch (e: Exception) {
+            val classPathFile = findAsset(klass, name).replace("./assets", "/assets")
+            gson.fromJson<JsonObject>(InputStreamReader(this::class.java.getResource(classPathFile).openStream()))
+        }
 
         val lb : LoadableBuilding = when (klass) {
             Residential::class -> Residential(cityMap)
