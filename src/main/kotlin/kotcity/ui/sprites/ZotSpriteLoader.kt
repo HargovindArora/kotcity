@@ -4,6 +4,7 @@ import javafx.scene.image.Image
 import kotcity.data.Zot
 import kotcity.memoization.CacheOptions
 import kotcity.memoization.cache
+import java.io.File
 
 object ZotSpriteLoader {
 
@@ -24,7 +25,15 @@ object ZotSpriteLoader {
         return imageForFile(filename, width, height)
     }
 
-    private fun uncachedImageForFile(filename: String, width: Double, height: Double) =
-        Image(filename, width, height, true, true)
+    private fun uncachedImageForFile(filename: String, width: Double, height: Double): Image {
+        return if (File(filename).isFile) {
+            Image(filename, width, height, true, true)
+        } else {
+            // let's try to load from classpath now...
+            val classPathFile = filename.replace("file:./assets", "assets")
+            println("The sprite filename is: $classPathFile")
+            Image(this::class.java.classLoader.getResource(classPathFile).toString(), width, height, true, true)
+        }
+    }
 
 }
