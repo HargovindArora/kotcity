@@ -52,7 +52,7 @@ class AssetManager(val cityMap: CityMap) {
                     .collect(toList())
                     .map({ it.toAbsolutePath().toString() })
         } catch (ex: java.nio.file.NoSuchFileException) {
-            val path = Paths.get(ClassLoader.getSystemResource("assets/$dir").toURI())
+            val path = Paths.get(this::class.java.classLoader.getResource("assets/$dir").toURI())
             return Files.walk(path)
                     .filter { it: Path? ->
                         it?.let { matcher.matches(it.fileName) } ?: false
